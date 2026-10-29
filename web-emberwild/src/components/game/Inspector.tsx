@@ -216,7 +216,7 @@ export function NpcCard({ npc, gs, onTalk, onApproach }: { npc: Npc; gs: GameSta
   return (
     <div className="panel-parchment corners p-3">
       <div className="mb-1 flex flex-wrap items-center gap-x-2 font-serif text-[17px] font-extrabold">
-        <img src={NPC_ART[npc.role]} alt="" className="h-10 w-10 object-contain" style={{ imageRendering: "pixelated" }} />
+        <img src={NPC_ART[npc.role]} alt="" className="h-10 w-10 object-contain" />
         <Icon className="h-4 w-4 opacity-70" />
         {npc.name}
         <span className="font-pixel text-sm font-normal opacity-70">{role.title}</span>

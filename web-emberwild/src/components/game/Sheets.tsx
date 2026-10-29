@@ -341,7 +341,7 @@ export function NpcSheet({ gs, open, npc, onClose, onParty }: { gs: GameState; o
     <Sheet open={open} onClose={onClose} title={`${npc.name} · ${NPC_ROLE[npc.role]}`} icon={<Icon className="h-5 w-5" />}>
       <div className="space-y-3 p-3">
         <div className="panel-parchment flex items-center gap-3 p-3">
-          <img src={NPC_ART[npc.role]} alt="" className="h-16 w-16 shrink-0 object-contain" style={{ imageRendering: "pixelated" }} />
+          <img src={NPC_ART[npc.role]} alt="" className="h-16 w-16 shrink-0 object-contain" />
           <div>
             {talk.map((line, i) => (
               <div key={i} className="font-serif text-sm font-bold">“{line}”</div>
@@ -590,7 +590,7 @@ function RivalPortrait({ id }: { id: string }) {
     const sh = im.height * 0.42;
     ctx.drawImage(im, sx, 0, sw, sh, 0, 0, cv.width, cv.height);
   }, [id, tick]);
-  return <canvas ref={ref} width={48} height={52} className="h-[52px] w-[48px] shrink-0 rounded-md border border-frame/40 bg-night-2/70" style={{ imageRendering: "pixelated" }} />;
+  return <canvas ref={ref} width={96} height={104} className="h-[52px] w-[48px] shrink-0 rounded-md border border-frame/40 bg-night-2/70" />;
 }
 
 export function StandingSheet({ gs, open, onClose }: { gs: GameState; open: boolean; onClose: () => void }) {

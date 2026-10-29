@@ -16,7 +16,7 @@ export function TitleScreen({ onNewJourney }: { onNewJourney: () => void }) {
 
   return (
     <div className="relative h-[100dvh] w-full overflow-hidden bg-night">
-      <img src={ART.title} alt="" className="pixel absolute inset-0 h-full w-full object-cover object-[30%_50%] sm:object-center" draggable={false} />
+      <img src={ART.title} alt="" className="absolute inset-0 h-full w-full object-cover object-[30%_50%] sm:object-center" draggable={false} />
       <div className="absolute inset-0 bg-gradient-to-b from-[#1c1830]/30 via-transparent to-[#1c1830]/85" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,transparent_30%,rgba(14,10,28,.55)_100%)]" />
       <Embers />

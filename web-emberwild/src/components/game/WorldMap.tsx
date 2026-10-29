@@ -441,6 +441,11 @@ export const WorldMap = memo(function WorldMap({ gs, v, scale, selected, path, r
         for (const [x, y] of path) ctx.fillRect(wx2x(x) + ts / 2 - 2, wy2y(y) + ts / 2 - 2, 4, 4);
       }
 
+      // sprites from here on are raw high-res art — smooth minification keeps
+      // the full detail (terrain above stays nearest-neighbor pixel-art)
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+
       // nests: persistent world objects — a developing clutch shows through
       for (const nest of Object.values(gs.nests)) {
         if (nest.state === "destroyed" || (nest.layer ?? 0) !== layer) continue;
@@ -1167,7 +1172,7 @@ export const WorldMap = memo(function WorldMap({ gs, v, scale, selected, path, r
     <div ref={wrapRef} className="absolute inset-0 overflow-hidden">
       <canvas
         ref={canvasRef}
-        className="pixel block h-full w-full cursor-pointer touch-none"
+        className="block h-full w-full cursor-pointer touch-none"
         style={{ width: size.w, height: size.h }}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}

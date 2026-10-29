@@ -73,7 +73,7 @@ export const Portrait = memo(function Portrait({
         src={MONSTER_ART[speciesId]}
         alt={sp.name}
         draggable={false}
-        className="pixel absolute inset-0 h-full w-full object-contain p-[6%]"
+        className="absolute inset-0 h-full w-full object-contain p-[6%]"
         style={silhouette ? { filter: "brightness(0) opacity(.55)" } : undefined}
       />
     </div>

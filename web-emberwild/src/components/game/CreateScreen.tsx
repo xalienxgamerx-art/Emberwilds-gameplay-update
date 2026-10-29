@@ -80,7 +80,7 @@ export function CreateScreen() {
 
   return (
     <div className="relative min-h-[100dvh] w-full overflow-x-hidden bg-night">
-      <img src={ART.title} alt="" className="pixel fixed inset-0 h-full w-full object-cover opacity-45 blur-[1px]" draggable={false} />
+      <img src={ART.title} alt="" className="fixed inset-0 h-full w-full object-cover opacity-45 blur-[1px]" draggable={false} />
       <div className="fixed inset-0 bg-gradient-to-b from-[#1c1830]/70 via-[#1c1830]/55 to-[#1c1830]/95" />
 
       <div className="relative mx-auto flex min-h-[100dvh] max-w-6xl flex-col px-4 pb-6 pt-4 sm:px-8 safe-top">
@@ -244,7 +244,7 @@ export function CreateScreen() {
                         className="relative aspect-square w-full overflow-hidden rounded-[4px] border-2 border-frame/70"
                         style={{ background: `radial-gradient(circle at 50% 40%, ${ELEMENTS[sp.element].color}77, #2a2140 80%)` }}
                       >
-                        <img src={MONSTER_IMG(m.speciesId)} alt={sp.name} className={cn("pixel absolute inset-0 h-full w-full object-contain p-[8%] transition-transform duration-300", on && "anim-bob scale-105")} draggable={false} />
+                        <img src={MONSTER_IMG(m.speciesId)} alt={sp.name} className={cn("absolute inset-0 h-full w-full object-contain p-[8%] transition-transform duration-300", on && "anim-bob scale-105")} draggable={false} />
                       </div>
                       <div className="px-1 pb-1 pt-2 text-center">
                         <div className="font-serif text-base font-extrabold leading-tight sm:text-2xl">{sp.name}</div>
@@ -282,7 +282,7 @@ function StarterPanel({ mon, monKey }: { mon: Monster; monKey: string }) {
     <div key={monKey} className="panel-parchment corners p-4 animate-in fade-in slide-in-from-right-2 duration-200">
       <div className="flex gap-3">
         <div className="h-24 w-24 shrink-0 overflow-hidden rounded-md border-2 border-frame" style={{ background: `radial-gradient(circle at 50% 40%, ${ELEMENTS[sp.element].color}88, #2a2140 85%)` }}>
-          <img src={MONSTER_IMG(mon.speciesId)} alt="" className="pixel h-full w-full object-contain p-1" />
+          <img src={MONSTER_IMG(mon.speciesId)} alt="" className="h-full w-full object-contain p-1" />
         </div>
         <div>
           <div className="font-serif text-lg font-extrabold leading-tight">{sp.name}, {sp.title}</div>
