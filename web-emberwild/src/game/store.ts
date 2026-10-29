@@ -24,10 +24,17 @@ const store: StoreShape = {
 
 const listeners = new Set<() => void>();
 let saveTimer: number | null = null;
+let lastEmitAt = 0;
 
 function emit(): void {
   store.v += 1;
+  lastEmitAt = Date.now();
   for (const l of listeners) l();
+}
+
+/** Milliseconds since the last game-state mutation — background workers yield to input while this is small. */
+export function msSinceLastAct(): number {
+  return Date.now() - lastEmitAt;
 }
 
 function subscribe(l: () => void): () => void {

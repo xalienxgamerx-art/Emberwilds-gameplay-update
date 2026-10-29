@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import {
   Backpack, BookOpen, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Compass, Drumstick, Egg, Flame, Hourglass, LogOut, Navigation, PawPrint,
   ScrollText, Search, Sparkles, Sprout, Target, Tent, Volume2, VolumeX, X,
@@ -41,6 +41,14 @@ type SheetId = "party" | "bag" | "bestiary" | "camp" | "shrine" | "offer" | "not
 export function GameScreen() {
   const { gs, v, muted } = useGame();
   const state = gs as GameState;
+  const wide = useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia("(min-width: 1024px)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(min-width: 1024px)").matches,
+  );
   const [sel, setSel] = useState<{ x: number; y: number } | null>(null);
   const [pick, setPick] = useState<PickMode | null>(null);
   const [sheet, setSheet] = useState<SheetId>(null);
@@ -511,11 +519,11 @@ export function GameScreen() {
         </main>
 
         {/* Desktop inspector */}
-        <aside className="hidden w-[340px] shrink-0 overflow-y-auto border-l-2 border-frame/70 bg-night-2 p-3 lg:block">{inspector}</aside>
+        {wide ? <aside className="w-[340px] shrink-0 overflow-y-auto border-l-2 border-frame/70 bg-night-2 p-3">{inspector}</aside> : null}
       </div>
 
       {/* Mobile inspector sheet */}
-      {sel ? (
+      {sel && !wide ? (
         <div className="fixed inset-x-0 bottom-0 z-30 max-h-[70dvh] overflow-y-auto rounded-t-xl border-t-2 border-frame bg-night-2 p-3 shadow-[0_-10px_30px_rgba(0,0,0,.5)] animate-in slide-in-from-bottom-8 duration-200 lg:hidden safe-bottom">
           <div className="mb-2 flex items-center justify-between">
             <span className="font-pixel text-gold">Inspect</span>

@@ -1,5 +1,6 @@
 import { WORLD_SIZE } from "./data";
 import { hash01 } from "./rng";
+import { msSinceLastAct } from "./store";
 import { getSettlementFootprint, isSettlement, settlementId, settlementTier, type SettlementTier } from "./settlement";
 import { climbCost, PLAYER_MOVER, stepRule, SURFACE, tileCost, walkable } from "./height";
 import { getFactions } from "./factions";
@@ -1050,14 +1051,20 @@ export function finishRoads(world: World): RoadNetwork {
  * Warm the road network in the background, one time slice per interval, like
  * warmOverviewAsync. Roads appear on the map as they are surveyed; the final
  * network is identical to a synchronous build.
+ *
+ * Slices stay small and the duty cycle low: a single realize() call is one
+ * uninterruptible A* route, and at 40 ms every 30 ms the pump owned ~57% of the
+ * main thread and dropped frames on phones. While the player is acting
+ * (moving, tapping the inspector) the pump stands down entirely.
  */
-export function warmRoadsAsync(world: World, msPerChunk = 40): () => void {
+export function warmRoadsAsync(world: World, msPerChunk = 12): () => void {
   let id: ReturnType<typeof setInterval> | null = null;
   const begin = setTimeout(() => {
     id = setInterval(() => {
+      if (msSinceLastAct() < 1500) return; // player is mid-action: stay out of the frame budget
       if (pumpRoads(world, msPerChunk)) stop();
-    }, 30);
-  }, 250);
+    }, 120);
+  }, 1500);
   const stop = (): void => {
     clearTimeout(begin);
     if (id) clearInterval(id);

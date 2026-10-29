@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ChevronRight, Dices, Flame, Leaf, Map as MapIcon, ScrollText, Sparkles } from "lucide-react";
 import { ART, MONSTER_ART } from "@/game/assets";
 import {
-  BODIES, EYE_COLORS, FACES, HAIRS, HAIR_COLORS, OUTFIT_COLORS, SKIN_TONES,
-  bodyDef, generateLook, resolveLook, SPRITE_H, SPRITE_W,
+  BODIES, FACES, HAIRS,
+  generateLook, resolveLook, SPRITE_H, SPRITE_W,
   type HairLength, type TamerLook,
 } from "@/game/appearance";
 import { ITEMS, ORIGINS, SCARVES, SPECIES, STARTERS, TRAITS, ELEMENTS } from "@/game/data";
@@ -59,25 +59,6 @@ function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; chi
   );
 }
 
-function Swatches({ swatches, value, onPick, label }: { swatches: { id: string; label: string; hex: string }[]; value: string; onPick: (id: string) => void; label: string }) {
-  return (
-    <div className="flex flex-wrap gap-1.5" role="radiogroup" aria-label={label}>
-      {swatches.map((s) => (
-        <button
-          key={s.id}
-          onClick={() => onPick(s.id)}
-          title={s.label}
-          aria-label={`${label}: ${s.label}`}
-          aria-checked={value === s.id}
-          role="radio"
-          className={cn("h-9 w-9 rounded-md border-2 border-frame transition-transform active:scale-90", value === s.id && "ring-2 ring-ember ring-offset-2 ring-offset-parchment")}
-          style={{ background: s.hex, boxShadow: "inset 0 -4px 0 rgba(0,0,0,.2)" }}
-        />
-      ))}
-    </div>
-  );
-}
-
 export function CreateScreen() {
   const [step, setStep] = useState<0 | 1>(0);
   const [name, setName] = useState<string>("Rook");
@@ -90,7 +71,6 @@ export function CreateScreen() {
   const starters = useMemo(() => STARTERS.map((s) => previewStarter(seed || "EMBER", s)), [seed]);
   const chosen = starters.find((m) => m.speciesId === pick) ?? starters[0];
   const setLookPart = (patch: Partial<TamerLook>): void => setLook((l) => resolveLook({ ...l, ...patch }).look);
-  const garments = bodyDef(look.body)?.garments ?? [];
 
   const begin = (): void => {
     const gs = newGame(seed || "EMBER", name, origin, scarf, chosen, look);
@@ -192,31 +172,7 @@ export function CreateScreen() {
                       </div>
                     </div>
                   ))}
-                  <div className="grid gap-3 sm:grid-cols-3">
-                    <div>
-                      <div className="mb-1 text-[12px] font-bold tracking-wide opacity-60">Skin</div>
-                      <Swatches swatches={SKIN_TONES} value={look.skin} onPick={(id) => setLookPart({ skin: id })} label="Skin tone" />
-                    </div>
-                    <div>
-                      <div className="mb-1 text-[12px] font-bold tracking-wide opacity-60">Hair color</div>
-                      <Swatches swatches={HAIR_COLORS} value={look.hairColor} onPick={(id) => setLookPart({ hairColor: id })} label="Hair color" />
-                    </div>
-                    <div>
-                      <div className="mb-1 text-[12px] font-bold tracking-wide opacity-60">Eyes</div>
-                      <Swatches swatches={EYE_COLORS} value={look.eyes} onPick={(id) => setLookPart({ eyes: id })} label="Eye color" />
-                    </div>
-                  </div>
-                  <div>
-                    <div className="mb-1 text-[12px] font-bold tracking-wide opacity-60">Outfit</div>
-                    <div className="grid gap-1.5">
-                      {garments.map((g) => (
-                        <div key={g.id} className="flex flex-wrap items-center gap-1.5">
-                          <span className="w-20 shrink-0 text-[12px] opacity-70">{g.label}</span>
-                          <Swatches swatches={OUTFIT_COLORS[g.palette]} value={look.outfit[g.id] ?? ""} onPick={(id) => setLookPart({ outfit: { ...look.outfit, [g.id]: id } })} label={g.label} />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <p className="text-[12px] italic opacity-60">Colors, skin and outfit come rolled with your look — hit “Surprise me” until one feels like yours.</p>
                 </div>
 
                 <SectionTitle>Signature color</SectionTitle>
